@@ -1,0 +1,3 @@
+PATH=$PATH:/home/user/project/ns234/bin:/home/user/project/ns234/tcl8.4.18/unix:/home/user/project/ns234/tk8.4.18/unix
+export LD_LIBRARY_PATH=/home/user/project/ns234/otcl-1.13:/home/user/project/ns234/lib
+export TCL_LIBRARY=/home/user/project/ns234/tcl8.4.18/library
