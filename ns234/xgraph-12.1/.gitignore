@@ -1,0 +1,6 @@
+aclocal.m4
+Makefile
+autoconf.h
+config.cache
+config.status
+stamp-h
