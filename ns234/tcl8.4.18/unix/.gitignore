@@ -1,5 +1,6 @@
 configure
 Makefile
 config.status
+config.cache
 tclConfig.sh
 tclsh
