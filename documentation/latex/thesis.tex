@@ -160,13 +160,11 @@ All Rights Reserved
 \vspace{0.2in}The following faculty members have examined the final copy of this thesis for form and content, and recommend that it be accepted in partial fulfillment of the requirement for the degree of Master of Science with a major in Electrical Engineering.\\ \\ \\ \\
 %\vspace{1.5in}
 \noindent \underline{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}\\
-\noindent Neeraj Jaggi, Committee Chair\\ \\ \\ \\
+\noindent Vinod Namboodiri, Committee Chair\\ \\ \\ \\
 \noindent \underline{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}\\
-\noindent Vinod Namboodiri, Committee Member\\ \\ \\ \\
+\noindent Neeraj Jaggi, Committee Member\\ \\ \\ \\
 \noindent \underline{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}\\
-\noindent Ed Sawan, Committee Member\\ \\ \\ \\
-\noindent \underline{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}\\
-\noindent Hamid M. Lankarani, Committee Member\\ \\ \\ \\
+\noindent Krishna Krishnan, Committee Member\\ \\ \\ \\
 \newpage
 %============================================================================================================
 %DEDICATION
@@ -185,7 +183,7 @@ To my family and friends
 \doublespacing
 \hspace{0.5in}I would like to thank Dr. Neeraj Jaggi for his valuable guidance throughout my thesis. He was very supportive and inspiring and I learned a lot while working with him. 
 I am very thankful to my parents and my brother for their continuous support.
-I also thank Dr. Vinod Namboodiri, Dr. Ed Sawan and Dr. Hamid M. Lankarani for their valuable comments.
+I also thank Dr. Vinod Namboodiri and Dr. Krishna Krishnan for their valuable comments.
 \newpage
 %============================================================================================================
 %ABSTRACT PAGE
@@ -193,12 +191,12 @@ I also thank Dr. Vinod Namboodiri, Dr. Ed Sawan and Dr. Hamid M. Lankarani for t
 \doublespacing
 \hspace{0.5in}IEEE 802.11 wireless LAN medium access control (MAC) provides transmission fairness to nodes in a network. 
 A misbehaving node can modify its MAC and operate in a selfish manner to improve its own performance (throughput) at the expense of other nodes' performance. 
-In this thesis, new misbehavior detection and reaction mechanisms are evaluated and their effect on throughput and fairness is studied. 
+In this thesis, new misbehavior detection and reaction mechanisms are proposed and evaluated, and their effect on throughput and fairness is studied. 
 This thesis proposes a new criteria for misbehavior detection: the inter-packet transmission (IPT) time.
 Nodes maintain a moving average of their own IPT time and also maintain the moving average of neighboring nodes' IPT times. 
 The ratio of a node's own IPT time to its neighbors' IPT time is calculated, and if this ratio exceeds a predetermined threshold, then the presence of misbehavior is detected. 
 When a misbehavior is detected in the network, genuine nodes react by collectively misbehaving, based on the extent of misbehavior in the network, in order to decrease the performance of the misbehaving nodes and also to improve their own performance. 
-It has been shown using extensive simulations that the newly proposed metric of inter-packet transmission time is very effective in designing misbehavior detection and reaction schemes.
+It has been shown using extensive simulations that the newly proposed metric of inter-packet transmission time is very effective in designing misbehavior detection and reaction schemes. Reaction effectiveness greater than $85\%$ is achieved in all scenarios considered.
 \newpage
 %============================================================================================================
 % ADD TABLE OF CONTENTS, TABLES, AND FIGURES
@@ -308,11 +306,11 @@ IEEE 802.11 basic access scheme operates in the following way: A node that wants
 If the medium is busy, the node uniformly chooses a backoff value in the range (0, CW-1), where CW is the contention window, and waits for a backoff value 
 %%??? 
 times slot time (20 $\mu$s) by counting down to zero. The contention window (CW) is initialized to $CW_{min}$, which is dependent on the physical (PHY) layer and its default value is 31. 
-Backoff counting occurs only when the medium is idle, i.e., when there are no transmissions in the network. If the medium is busy, the backoff timer is frozen and resumes when the medium becomes idle. 
+Backoff counting occurs only when the medium is idle, i.e., when there are no transmissions in the network. If the medium is busy, the backoff timer is frozen and resumes counting down when the medium becomes idle. 
 If a collision occurs during transmission, the node doubles its contention window and uniformly chooses a value from the new contention window. 
 The process of counting down to zero and doubling the contention window repeats until the packet is transmitted. The maximum value of the contention window is $CW_{max}$, and its default value is 1023.
 \\
-\indent In addition to the basic access method, an optional request to send - clear to send (RTS-CTS) mechanism is also defined by the standard. In basic access scheme, when large size frames are transmitted, the probability of collision increases. The RTS-CTS scheme is aimed at reducing the collision of large frames. In RTS-CTS scheme, the sending node first transmits a small RTS frame addressed to the receiving node. The receiving node detects the RTS frame and responds with a CTS frame after short inter-frame space (SIFS) duration. The sending node, after receiving the CTS frame, transmits the large data frame. The RTS and CTS frames exchanged by the sending and receiving nodes contain information about the length of the packet to be transmitted. The RTS and CTS frames are received by the neighboring nodes as well and based on the length of the packet to be transmitted, the neighboring nodes update their network allocation vector (NAV). The NAV value indicates the period of time during which the medium will be busy and the nodes refrain from transmitting. RTS-CTS mechanism is considered for this thesis.
+\indent In addition to the basic access method, an optional request to send - clear to send (RTS-CTS) mechanism is also defined by the standard. In basic access scheme, when large size frames are transmitted, the probability of collision increases. The RTS-CTS scheme is aimed at reducing the collision of large frames. In RTS-CTS scheme, the sending node first transmits a small RTS frame addressed to the receiving node. The receiving node detects the RTS frame and responds with a CTS frame after short inter-frame space (SIFS) duration. The sending node, after receiving the CTS frame, transmits the large data frame. The RTS and CTS frames exchanged by the sending and receiving nodes contain information about the length of the packet to be transmitted. The RTS and CTS frames are received by the neighboring nodes as well and based on the length of the packet to be transmitted, the neighboring nodes update their network allocation vector (NAV). The NAV value indicates the period of time during which the medium will be busy and the nodes refrain from transmitting during this time and freeze their backoff counters. RTS-CTS mechanism is considered in this thesis.
 \subsection{MAC Layer Misbehavior}
 \label{subsection:maclayermisbehavior}
 \indent The IEEE 802.11 BEB algorithm provides nodes fair access to the medium. 
@@ -321,17 +319,17 @@ This greedy behavior is called a MAC misbehavior, and these nodes are referred t
 Nodes that follow the standard BEB are referred to as \textbf{genuine nodes}. 
 Deviating from the standard BEB is not the only way to misbehave. Nodes can modify MAC parameters such as short inter-frame space (SIFS) and DIFS, and nodes can choose values smaller than those specified in the standard. 
 Giri and Jaggi 
-[2]
+[2] 
 %\cite{giriclassification} 
 classify different types of misbehavior and study their effectiveness. 
 Two types of misbehaviors, which they define in 
-[2]
-%\cite{giriclassification}
-, are used in this thesis: $\alpha$-misbehavior and $CW_{fix}$-misbehavior.
+[2], 
+%\cite{giriclassification}, 
+are used in this thesis: $\alpha$-misbehavior and $CW_{fix}$-misbehavior.
 \begin {itemize}
 \item{{$\alpha$-misbehavior} :
 Instead of choosing the backoff $b$ uniformly at random from the interval $[0 \ldots CW - 1]$, the selfish node chooses $b$ uniformly at random from the interval $[0 \ldots \alpha (CW - 1)]$, where $0 < \alpha < 1$.
-Thus, the node ends up choosing a smaller backoff interval than it is supposed to and increasing its chances of accessing the channel next.
+Thus, the node ends up choosing a smaller backoff interval than it is supposed to and increases its chances of accessing the channel next.
 }
 \item{ {Fixed contention window ($CW_{fix}$)-misbehavior}:
 The selfish node sets its contention window to a small, fixed size $CW_{fix}$ and always chooses its backoff interval uniformly at random
@@ -339,9 +337,9 @@ from the interval $[0 \ldots CW_{fix}]$.
 }
 \end{itemize}
 According to Giri and Jaggi 
-[2]
-%\cite{giriclassification}
-, effectiveness is defined as the percentage of improvement in throughput when a node misbehaves. This definition of effectiveness is followed in this thesis, where misbehaving nodes are considered to misbehave according to $\alpha$-misbehavior with $\alpha$ = 0.1.  
+[2], 
+%\cite{giriclassification}, 
+misbehavior effectiveness is defined as the percentage of improvement in throughput when a node misbehaves. This definition of effectiveness is followed in this thesis, where misbehaving nodes are considered to misbehave according to $\alpha$-misbehavior with $\alpha$ = 0.1.  
 \subsection{Contribution of This Thesis}
 \indent In this thesis, a new detection scheme using the inter-packet transmission (IPT) time and a collective reaction strategy are proposed. The contributions of this thesis can be summarized as follows:
 \begin{itemize}
@@ -351,11 +349,11 @@ According to Giri and Jaggi
 \item A collective reaction strategy based on the level of misbehavior in the network is proposed.
 %Once misbehavior is detected, genuine nodes react by misbehaving themselves, i.e., the genuine nodes deviate from the protocol standard as well in order to react towards the misbehavior. Genuine nodes misbehave based on the level of misbehavior present in the network
 \item Results from the Network Simulator-2 (NS-2) simulations are used to evaluate the proposed detection and reaction schemes. Fairness among the reacting genuine nodes is also studied.
-\item Simulations results indicate that the proposed detection and reaction schemes are effective and performs well with varying number of nodes genuine and misbehaving nodes in the network. 
-\item Genuine nodes, after detecting misbehavior and reacting, is able to improve its throughput and the due to the genuine  reaction, the misbehaving nodes suffer throughput loss.
+\item Simulations results indicate that the proposed detection and reaction schemes are effective and perform well even with varying number of misbehaving and genuine nodes in the network.
+\item By detecting the misbehavior and reacting dynamically, the genuine nodes are able to improve their own throughputs, and also succeed in inflicted throughput losses on misbehaving nodes.
 \end{itemize}
 \subsection{Thesis Organization}
-\indent The remainder of this thesis is organized as follows: Chapter \ref{chapter:relatedwork} presents a literary overview of the work done in this area of research. Chapter \ref{chapter:detection} discusses the proposed detection mechanism. Chapter \ref{chapter:reaction} talks about the proposed misbehavior reaction strategy and derives an equation used by the reacting genuine nodes. Chapter \ref{chapter:simulation} presents the NS-2 results of the detection and reaction mechanisms discussed. Finally, Chapter \ref{chapter:conclusion} summarizes the thesis, and discusses conclusions and future directions.
+\indent The remainder of this thesis is organized as follows. Chapter \ref{chapter:relatedwork} presents a literary overview of the work done in this area of research. Chapter \ref{chapter:detection} discusses the proposed detection mechanism. Chapter \ref{chapter:reaction} talks about the proposed misbehavior reaction strategy and derives an equation used by the reacting genuine nodes. Chapter \ref{chapter:simulation} presents the NS-2 results of the detection and reaction mechanisms discussed. Finally, Chapter \ref{chapter:conclusion} summarizes the thesis, and discusses conclusions and future directions.
 \newpage
 %============================================================================================================
 %CHAPTER 2: RELATEDWORK
@@ -381,14 +379,14 @@ CHAPTER 2
 %\cite{radosavacsprt} 
 observe neighboring nodes' backoff intervals and apply the sequential probability ratio test (SPRT) on the backoff values to detect misbehavior. 
 Rong et al. 
-[4]
+[4] 
 %\cite{rong} 
 also use the SPRT on packet inter-arrival times and throughput degradation to detect misbehavior.
 \\
 \indent Raya et al. in 
 [5] 
 %\cite{domino} 
-propose a mechanism, named DOMINO, which is deployed in access points, to detect misbehavior. This mechanism uses a modular architecture that consists of individual tests and a decision-making component (DMC). Tests are run on parameters such as shorter than DIFS, oversized network allocation vector (NAV), backoff, and scrambled frames. Each test consists of a deviation estimation component (DEC) and anomaly detection component (ADC). The test results are given as input to the decision-making component where results are aggregated using functions and weighted results are generated. This result is used in the decision of misbehavior detection.
+propose a mechanism, named DOMINO, which is deployed in access points, to detect misbehavior. This mechanism uses a modular architecture that consists of individual tests and a decision-making component (DMC). Tests are run on parameters such as shorter DIFS, oversized network allocation vector (NAV), backoff, and scrambled frames. Each test consists of a deviation estimation component (DEC) and anomaly detection component (ADC). The test results are given as input to the decision-making component where results are aggregated using functions and weighted results are generated. This result is used in the decision of misbehavior detection.
 \subsection{Reaction Mechanism}
 \indent Kyasanur and Vaidya 
 [6] 
@@ -407,9 +405,9 @@ compare the two popular detection algorithms SPRT
 [3] 
 %\cite{radosavacsprt} 
 and DOMINO 
-[5] 
-%\cite{domino} 
-, both theoretically and by using simulations.
+[5], 
+%\cite{domino}, 
+both theoretically and by using simulations.
 Guang et al. 
 [9] 
 %\cite{prb} 
@@ -426,7 +424,7 @@ An important goal of this thesis is to propose a new parameter or criteria for m
 The collective reaction strategy proposed by Jaggi et al 
 [10] 
 %\cite{giridistributed} 
-evaluate their scheme only for fixed number nodes genuine and misbehaving nodes. A good detection and reaction scheme should work irrespective the number of nodes in the networks. The detection and reaction schemes proposed in this thesis are aimed to work for varying number of nodes in the network.
+evaluate their scheme only for fixed number of genuine and misbehaving nodes. A good detection and reaction scheme should be able to scale with number of nodes in the network. The detection and reaction schemes proposed in this thesis are designed to work with varying number of nodes in the network.
 \newpage
 %============================================================================================================
 %CHAPTER 3: DETECTION
@@ -460,7 +458,7 @@ CHAPTER 3
 \label{figure:ownipt}
 \end{figure}
 \indent According to the definition, the IPT time is the time between two RTS packets. 
-In NS-2, calculating the time between two RTS packets is difficult since it involves adjusting for the retransmission of RTS packets. Hence, the time between the two CTS packets, instead of the RTS packets, is used in the IPT time calculation. In spite of the difference between the definition of IPT time and the implementation of IPT time, the value calculated by the using the CTS packets results in an accurate calculation of the IPT time. This is verified using NS-2 simulation, whereby packets are sent at a slow rate (1 packet per second), and the node's own IPT time is verified to be closer to 1 (0.999) which is same as the transmission rate (1 packet per second). 
+In NS-2, calculating the time between two successful RTS packets is difficult since it involves adjusting for the retransmission of RTS packets. Hence, the time between the two CTS packets, instead of the RTS packets, is used in the IPT time calculation. In spite of the difference between the definition of IPT time and the implementation of IPT time, the value calculated by the using the CTS packets results in an accurate calculation of the IPT time. This is verified using NS-2 simulation, whereby packets are sent at a slow rate (1 packet per second), and the node's own IPT time is verified to be close to 1 (0.999) which is inline with the transmission rate (1 packet per second). 
 \subsubsection{Neighbor's IPT Time Calculation}
 \indent Like the node's own IPT time, each node maintains a list of neighboring nodes, and for each of the nodes, a simple moving average of the IPT time is maintained. This calculation is shown in Figure \ref{figure:neighboript}.
 \begin{figure}[H]
@@ -469,7 +467,7 @@ In NS-2, calculating the time between two RTS packets is difficult since it invo
 \caption{Neighbor's IPT time calculation}
 \label{figure:neighboript}
 \end{figure}
-The neighbor's IPT time is estimated by listening to the medium and calculating the time between RTS packets. A linked-list data structure is used in the neighbor's IPT time calculation and maintainence. The linked-list is indexed using node IDs. Each node in the network maintains the linked-list, and each node in the linked-list contains the neighbor's node ID and the moving average of IPT corresponding to the node. The neighbor's IPT time for a node is calculated based on the time between reception of two RTS packets from the same node. Similar to the node's own IPT time calculation, simple moving average of the IPT time values for each of the neighboring nodes is maintained. 
+The neighbor's IPT time is estimated by listening to the medium and calculating the time between RTS packets sent by the neighbor. A linked-list data structure is used in the neighbor's IPT time calculation and maintainence. The linked-list is indexed using node IDs. Each node in the network maintains the linked-list, and each node in the linked-list contains the neighbor's node ID and the moving average of IPT corresponding to the node. The neighbor's IPT time for a node is calculated based on the time between reception of two RTS packets from the same node. Similar to the node's own IPT time calculation, simple moving average of the IPT time values for each of the neighboring nodes is maintained. 
 \\
 \indent Both IPT times (a node's own IPT time and a neighbor's IPT time) are simple moving averages of individual or instantenous IPT times. The moving average is calculated over a period of 250 packets. The value of 250 is chosen for the moving average period after several trials with larger and smaller values. If the moving average period value is large, say 1000, then the node takes more time to detect misbehavior, and if the period is very small, then the node may falsely conclude misbehavior even for small variations in the network. Therefore, a value of 250 is chosen.
 \begin{table}[H]
@@ -501,10 +499,10 @@ When a node is configured as a misbehaving node, it follows $\alpha$-misbehavior
 \subsection{Proposed Detection Scheme}
 \label{subsection:detectionscheme}
 \indent In the detection scheme proposed, the presence of misbehavior in an ad hoc network is detected using IPT time.
-As mentioned earlier, each node maintains its own IPT time ($IPT_O$) and a list of neighbors' IPT times ($(IPT_N)^i$). In addition to neighbors' IPT times, a ratio of a node's own IPT time and each of its neighbor's IPT time is also maintained and it is shown in equation (\ref{equation:iptratio}).
+As mentioned earlier, each node maintains its own IPT time ($IPT_O$) and a list of neighbors' IPT times ($(IPT_N)^i$). In addition to neighbors' IPT times, a ratio of a node's own IPT time and each of its neighbor's IPT time, denoted $R_i$ is also maintained, as shown in equation (\ref{equation:iptratio}).
 \begin{equation}
 \label{equation:iptratio}
-Ratio\ of\ IPT\ time\ for\ a\ neighbor\ i,\ R_i = \frac{IPT_O}{(IPT_N)^i}
+R_i = \frac{IPT_O}{(IPT_N)^i}
 \end{equation}
 Equation (\ref{equation:iptratio}) is used in the detection of misbehavior.
 To define a misbehavior detection rule, a parameter called detection threshold is introduced. The misbehavior detection threshold of a node is the maximum value of the ratio in equation (\ref{equation:iptratio}) for a given number of nodes in the network. To find the threshold value, NS-2 simulations are performed when no misbehavior is present in the network. During the simulation, with four sending nodes (nodes 1, 2, 3 and 4) and a receiving node (node 5), the highest value of the ratio of IPT times for node number 1 is noted. The simulation is repeated with 9, 14 and 19 sending nodes. This is captured in Figure \ref{figure:worstcaseratio} which represents the worst case $\frac{IPT_O}{(IPT_N)^i}$ when no misbehavior is present in network. 
@@ -514,8 +512,8 @@ To define a misbehavior detection rule, a parameter called detection threshold i
 \caption{Worst case ratio of node's own IPT time to neighbor's IPT time (presence of misbehavior)}
 \label{figure:worstcaseratio}
 \end{figure}
-If this ratio exceeds the detection threshold, then the node concludes presence of misbehavior in the network.
-\indent The average values of the worst case scenario for different network sizes are captured in Table \ref{table:averageworstcase}. 
+\indent If this ratio exceeds the detection threshold, then the node concludes presence of misbehavior in the network.
+The average values of the worst case scenario for different network sizes are captured in Table \ref{table:averageworstcase}. 
 \begin{table}[H]
 \caption{Average of Worst Case IPT Time Ratios}
 \label{table:averageworstcase}
@@ -533,8 +531,9 @@ Nodes & IPT Time Ratio\\
 \end{center}
 \end{table}
 An example of a detection threshold for ten nodes is discussed here.
-Based on the value in Table \ref{table:averageworstcase}, the detection threshold of 1.25 is chosen for ten nodes, i.e., if $\frac{IPT_O}{(IPT_N)^i}$ exceeds 1.25, then the corresponding neighbor is declared as misbehaving. Similar approach can be used to set appropriate thresholds for N = {5,15,20} nodes as well. This ratio is also used during the reaction mechanism. The reaction mechanism is discussed in detail in the Chapter \ref{chapter:reaction}.
-\indent The inverse of $\frac{IPT_O}{(IPT_N)^i}$ is the misbehavior strength ($\gamma$), and it lies between 0 and 1. More precisely, $0 < \frac{1}{\frac{IPT_O}{(IPT_N)^i}} \leq 1$. In the case of ten nodes, if $\frac{IPT_O}{(IPT_N)^i}$ is found to be 3.5, then the misbehavior strength is $0.28$.
+Based on the value in Table \ref{table:averageworstcase}, the detection threshold of 1.25 is chosen for ten nodes, i.e., if $\frac{IPT_O}{(IPT_N)^i}$ exceeds 1.25, then the corresponding neighbor is declared as misbehaving. Similar approach can be used to set appropriate thresholds for N = {5,15,20} nodes as well. 
+\\
+\indent The inverse of $\frac{IPT_O}{(IPT_N)^i}$ is the misbehavior strength ($\gamma$), and it lies between 0 and 1. More precisely, $0 < \frac{1}{\frac{IPT_O}{(IPT_N)^i}} \leq 1$. The misbehavior strength ($\gamma$) is used during the reaction mechanism. The reaction mechanism is discussed in detail in the Chapter \ref{chapter:reaction}. In the case of ten nodes, if $\frac{IPT_O}{(IPT_N)^i}$ is found to be 3.5, then the misbehavior strength is $0.28$. This detection scheme is presented in Algorithm \ref{algorithm:detection}.
 \begin{algorithm}
 \caption{Detection Algorithm}
 \label{algorithm:detection}
@@ -544,7 +543,7 @@ Based on the value in Table \ref{table:averageworstcase}, the detection threshol
 \STATE i=1
 \WHILE{$i<=N$}
     \IF {$\frac{IPT_O}{(IPT_N)^i} > (1.25)$} 
-        \STATE $mark\ node\ as\ misbehaving$
+        \STATE $node_{i}\ is\ misbehaving$
         \IF {$m\ <\ \frac{IPT_O}{(IPT_N)^i}\ ratio$}
         	\STATE $m = \frac{IPT_O}{(IPT_N)^i}$
         \ENDIF
@@ -560,16 +559,17 @@ Based on the value in Table \ref{table:averageworstcase}, the detection threshol
 \ENDIF
 \end{algorithmic}
 \end{algorithm}
-This detection scheme is presented in Algorithm \ref{algorithm:detection}. The detection algorithm is run by each of the genuine nodes in the networks. Since misbehavior detection is based on the inter-packet transmission time, the detection algorithm is invoked whenever neighbor IPT time is updated, i.e., when a packet is received from a neighbor. The detection algorithm has access to both the node's own IPT time and the node's linked list, which maintains the neighbor's IPT time.
+\\
+\indent The detection algorithm is run by each of the genuine nodes in the network. Since misbehavior detection is based on the inter-packet transmission time, the detection algorithm is invoked whenever neighbor IPT time is updated, i.e., when a packet is received from a neighbor. The detection algorithm has access to both the node's own IPT time and the node's linked list, which maintains the neighbor's IPT time.
 \\
 \indent The detection algorithm traverses through the linked list and calculates the ratio of its own IPT time and each neighbor's IPT time. If the ratio exceeds the detection threshold, then the corresponding node is marked as misbehaving, and the variable $m$ indicating misbehavior is updated with the $\frac{IPT_O}{(IPT_N)^i}$. If more than one neighboring node is misbehaving, then the greatest $\frac{IPT_O}{(IPT_N)^i}$ is considered, and $m$ is updated with that value. The inverse of $\frac{IPT_O}{(IPT_N)^i}$ is returned by the detection algorithm as the misbehavior strength ($\gamma$) present in the network.
 The detection scheme returns 1, if no misbehavior is detected.
 The detection scheme is used only by genuine nodes; misbehaving nodes do not use any detection scheme.
 \\
-\indent The detection scheme proposed uses a new parameter namely the IPT time. This method has not been proposed by any  literature in this field of research. The results shown in Chapter \ref{chapter:simulation} indicate that scheme is successful in detecting misbehaviors. The detection scheme proposed, unlike 
-[6]
-%\cite{kyasanur}
-, does not require any protocol modifications. The information collected the genuine nodes are local to the nodes and the detection scheme is easily scalable. An important characteristic of this detection scheme is that it is dynamic in nature and can detect if the nodes have stopped misbehaving and returned to normal BEB algorithm. 
+\indent The detection scheme proposed uses a new parameter namely the IPT time. This method has not been proposed by any  literature in this field of research. The results shown in Chapter \ref{chapter:simulation} indicate that the proposed scheme is successful in detecting misbehaviors. The detection scheme proposed, unlike 
+[6], 
+%\cite{kyasanur}, 
+does not require any protocol modifications. The information collected by the genuine nodes is collected locally and the detection scheme is easily scalable. An important characteristic of this detection scheme is that it is dynamic in nature and can detect if the nodes have stopped misbehaving and returned to normal BEB algorithm. 
 \subsection{Summary}
 \label{summarydetection}
 \indent This chapter explains the estimation of a node's own IPT time and also its neighbor's IPT times. It also discusses the choice of detection threshold and how it varies with the number of nodes. A detection scheme based on the ratio of a node's own IPT time and neighbor's IPT time is presented.
@@ -590,7 +590,7 @@ CHAPTER 4
 \end{singlespace}
 \addtocontents{toc}{\protect\mbox{}\protect}
 \subsection{Introduction}
-\indent The reaction scheme is the strategy or methodology used by the genuine nodes to react against misbehavior in order to improve its own throughput and to penalize the misbehaving node(s). This chapter describes the design of the proposed reaction strategy used by the genuine nodes. $CW_{fix}$-misbehavior, defined in Section \ref{subsection:maclayermisbehavior}, is used by the genuine nodes for a reaction scheme. An equation to compute an appropriate value to use for $CW_{fix}$ is also presented in this chapter.
+\indent The reaction scheme is the strategy or methodology used by the genuine nodes to react against misbehavior in order to improve their own throughputs and to penalize the misbehaving node(s). This chapter describes the design of the proposed reaction strategy used by the genuine nodes. $CW_{fix}$-misbehavior, defined in Section \ref{subsection:maclayermisbehavior}, is used by the genuine nodes for a reaction scheme. An equation to compute an appropriate value to use for $CW_{fix}$ is also presented in this chapter.
 \subsection{Desired Properties of Reaction Scheme}
 \label{subsection:propertiesofreaction}
 \indent The reaction scheme employed by the genuine nodes should be simple and distributed, and should result in minimal or no protocol change. 
@@ -600,7 +600,7 @@ Jaggi et al.
 used a collective misbehavior reaction strategy. This thesis also uses, a collective misbehavior reaction strategy.
 In a collective reaction strategy, when the genuine nodes detect misbehavior in the network, they also start misbehaving to improve their throughput. All genuine nodes follow the same reaction scheme.
 The collective reaction strategy used here is distributed and requires minimal protocol modification.\\
-\indent The reaction scheme proposed uses a fixed contention window ($CW_{fix}$) type of misbehavior. Genuine nodes choose a random backoff from this fixed contention window and do not double the contention window as in normal operation of the IEEE 802.11 BEB algorithm. The value of the $CW_{fix}$ used by the genuine nodes should be smaller (nodes back off for a smaller duration) in order to provide an advantage to the genuine nodes, i.e., more frequent access to the medium. If the $CW_{fix}$ is too small, then genuine nodes will spend most of the time in collision and less time in successful transmission of packets. Thus, a tradeoff is involved in the choice of the $CW_{fix}$ value. Also if the misbehavior is mild a larger $CW_{fix}$ may suffice but if the misbehavior is severe a smaller $CW_{fix}$ might be needed. This tradeoff and a proposed scheme to compute an effective value for $CW_{fix}$ are discussed here.
+\indent The reaction scheme proposed uses a fixed contention window ($CW_{fix}$) type of misbehavior. Genuine nodes choose a random backoff from this fixed contention window and do not double the window upon collision, as in normal operation of the IEEE 802.11 BEB algorithm. The value of the $CW_{fix}$ used by the genuine nodes should be smaller (nodes back off for a smaller duration) in order to provide an advantage to the genuine nodes, i.e., more frequent access to the medium. If the $CW_{fix}$ is too small, then genuine nodes will spend most of the time in collision and less time in successful transmission of packets. Thus, a tradeoff is involved in the choice of the $CW_{fix}$ value. Also if the misbehavior is mild, a larger $CW_{fix}$ may suffice but if the misbehavior is severe, a smaller $CW_{fix}$ might be needed. This tradeoff and a proposed scheme to compute an effective value for $CW_{fix}$ are discussed here.
 \subsection{Design of Reaction Scheme} 
 \label{subsection:reactiondesign} 
 \indent Three parameters are used in the reaction scheme:
@@ -609,7 +609,7 @@ The collective reaction strategy used here is distributed and requires minimal p
 \item Reaction Factor - The strength of misbehavior used by the genuine nodes. In the case of the $CW_{fix}$-misbehavior type, the reaction factor is $CW_{fix}$. If $\alpha$-misbehavior is used for the reaction, then the reaction factor is $\alpha$.
 \item Reaction Count - This count is used to compensate for the time spent until misbehavior is detected. Note that genuine nodes do not react until misbehavior is detected. This count is incremented when misbehavior is detected and decremented when no misbehavior is detected. If reaction count is greater than zero, reaction is applied. If the count is zero and no misbehavior is detected, then the genuine nodes do not react. 
 \end{itemize}
-Misbehavior is detected as described in Chapter \ref{chapter:detection}. The detection scheme returns the presence of misbehavior in the network. If misbehavior is present, then the strength of misbehavior ($\gamma$) is returned. This is used in calculating the reaction factor.
+\indent Misbehavior is detected as described in Chapter \ref{chapter:detection}. The detection scheme returns the presence of misbehavior in the network. If misbehavior is present, then the strength of misbehavior ($\gamma$) is returned. This is used in calculating the reaction factor.
 As discussed in the previous section, the reaction scheme used in the experiments conducted in this thesis is $CW_{fix}$ misbehavior. Hence, the reaction factor mentioned earlier is $CW_{fix}$. Note that other reaction schemes are equally suitable and could also be used. The $CW_{fix}$ used by reacting genuine nodes should address the tradeoff, discussed earlier in Section \ref{subsection:propertiesofreaction}, about achieving the maximum gain while minimizing collisions in the network. If $CW_{fix}$ is smaller for a large number of nodes, then the number of collisions will increase, thus leading to less throughput. Therefore, $CW_{fix}$ should be directly proportional to number of nodes in the network.
 \\
 \indent Bianchi et al. 
@@ -627,10 +627,10 @@ CW_{optimal} = n * \sqrt{2K}
 where n is number of nodes contending for the channel, $K = T_{PH} + T_{RTS} + DIFS + \tau$, $T_{PH}$ is the PHY header transmission time, and $T_{RTS}$ is the RTS transmission time, and $\tau$ is the propagation delay. K is expressed in slot times. In this simulation, the values used are 
 $T_{PH} + T_{RTS} = 352 \mu s$, 
 $DIFS = 50 \mu s$, 
-$\tau = 2 \mu s$ and  
-$2K = 6.356099$.
+$\tau = 2 \mu s$.
+Substituting these values, the value of $\sqrt{2K}$ is found to be $6.356099$.
 \\
-Using equation (\ref{equation:cwoptimalrts}), the $CW_{optimal}$ values for different number of nodes are presented in Table \ref{table:optimalcw}.
+\indent Note that according to equation (\ref{equation:cwoptimalrts}), n is number of nodes contending for the channel. Hence when number of nodes in the network is five, there are four nodes contending for the channel. Using equation (\ref{equation:cwoptimalrts}), the $CW_{optimal}$ values for different number of nodes are presented in Table \ref{table:optimalcw}.   
 \begin{table}[H]
 \caption{Optimal CW}
 \label{table:optimalcw}
@@ -716,7 +716,7 @@ This is accomplished by maintaining a counter $misbhReactCount$. This counter is
 When no misbehavior is detected and $misbhReactCount$ is zero, then the genuine nodes do not react and follow the IEEE 802.11 BEB algorithm.
 The simulation results of the detection scheme and the reaction scheme are presented in Chapter \ref{chapter:simulation}.
 \\
-\indent The proposed reaction scheme uses a novel method of controlling reaction strength based on IPT time. The scheme considers factors like number of nodes in the networks, the misbehavior strength and adjusts the reaction dynamically. A distinctive feature of this scheme is that it is scalable to any network size and the scheme can be extended to other reaction types (like $\alpha$ misbehavior instead of $CW_{fix}$ misbehavior.) Scheme is adaptive as in if misbehaving nodes stops misbehaving or returns to normal behavior, the genuine nodes also return to normal BEB behavior. The reaction requires a minimal protocol modification and the decisions made by the genuine nodes are totally based on the local information available to the nodes.
+\indent The proposed reaction scheme uses a novel method of controlling reaction strength based on IPT time. The scheme considers factors like number of nodes in the network, the misbehavior strength and adjusts the reaction dynamically. A distinctive feature of this scheme is that it is scalable to any network size and the scheme can be extended to other reaction types (like $\alpha$ misbehavior instead of $CW_{fix}$ misbehavior.) Scheme is adaptive as in if misbehaving nodes stops misbehaving or returns to normal behavior, the genuine nodes also return to normal BEB behavior. The reaction requires a minimal protocol modification and the decisions made by the genuine nodes are totally based on the local information available to the nodes.
 \subsection{Summary}
 \label{summaryreaction}
 \indent This chapter presents the proposed reaction scheme used by the genuine nodes. The genuine nodes use $CW_{fix}$-misbehavior. Based on the strength of the misbehavior present and the number of nodes in the network, the reaction scheme calculates the appropriate $CW_{fix}$ values to be used by the genuine nodes. The reaction scheme dynamically adjusts according to the strength of misbehavior present in the network.
@@ -757,7 +757,7 @@ The calculation of inter-packet transmission time is performed dynamically by th
 \item Throughput is used in the evaluation of the effectiveness of detection and reaction schemes. 
 Once the simulation is complete, using a PERL script, the trace output of the simulation is analyzed and throughput of nodes is computed. 
 Based on the improvement of genuine nodes' throughput, it can be concluded if the detection and reaction mechanisms are effective in dealing with the presence of misbehavior in the network.
-\item Fairness in throughput among nodes is also calculated. Jain's fairness index 
+\item Fairness in throughput among genuine nodes is also calculated. Jain's fairness index 
 [12] 
 %\cite{jainfairness} 
 is used in the throughput fairness calculation.
@@ -809,7 +809,7 @@ Similar behavior is observed when two nodes are misbehaving, as shown in Figure 
 \end{figure}
 Throughput of the nodes in the absence of misbehavior is $\approx$ 125 Kbps. Figure  \ref{figure:10nodes_1misbehavior_alpha1} shows when a node misbehaves, throughput of the genuine nodes falls by approximately $28\%$ to 90 Kbps. When the genuine nodes react, throughput of the individual genuine nodes increase by $24\%$ to 112 Kbps.
 Figure \ref{figure:10nodes_2misbehavior_alpha1} depicts the scenario when two nodes are misbehaving. Due to the two misbehaving nodes, the genuine nodes suffer a greater throughput loss (dropping to 43 Kbps) and the misbehavior strength is larger i.e., $\gamma$ is smaller than in \ref{figure:10nodes_1misbehavior_alpha1}.
-\begin{figure}
+\begin{figure}[H]
 \centering
 \subfloat[1 misbehaving node]{
 \label{figure:15nodes_1misbehavior_alpha1}\includegraphics[width=3.2in,height=2.2in]{figures/15nodes_1misbh.png}
@@ -845,13 +845,13 @@ In all of these scenarios, the fairness among the throughput achieved by genuine
 \caption{Fairness among genuine nodes}
 \label{figure:fairness}
 \end{figure}
-To measure the reaction effectiveness of the reaction scheme, a metric called reaction effectiveness is used and is defined as 
+To measure the reaction effectiveness of the reaction scheme, a metric called reaction effectiveness (denoted $R_{eff}$) is defined as 
 \begin{equation}
 \label{equation:reaction_effectiveness}
-re = \frac{genuine\ nodes'\ average\ throughput\ with\ reaction}{genuine\ nodes'\ average\ throughput\ with\ no\ misbehavior} * 100
+R_{eff} = \frac{genuine\ nodes'\ average\ throughput\ with\ reaction}{genuine\ nodes'\ average\ throughput\ with\ no\ misbehavior} * 100
 \end{equation}
 Figure \ref{figure:reaction_effectiveness} depicts the reaction effectiveness. 
-Reaction effectiveness (re) values closer to $100\%$ indicate that the genuine nodes, after reaction, were able to achieve as much throughput as they would have achieved if there was no misbehavior. From the results, reaction is more effective when number of misbehaving nodes is larger and when the total number of nodes in the network is smaller. As a result of applying reaction, the overall network throughput decreases slightly. This is expected, since all the genuine nodes are misbehaving under the reaction scheme. However, most of the loss in throughput is shared by misbehaving nodes, since the misbehavior effectiveness is close to $100\%$ for many scenarios and is greater than $85\%$ in all scenarios evaluated.
+Reaction effectiveness ($R_{eff}$) values closer to $100\%$ indicate that the genuine nodes, after reaction, were able to achieve as much throughput as they would have achieved if there was no misbehavior. From the results, reaction is more effective when number of misbehaving nodes is larger and when the total number of nodes in the network is smaller. As a result of applying reaction, the overall network throughput decreases slightly. This is expected, since all the genuine nodes are misbehaving under the reaction scheme. However, most of the loss in throughput is shared by misbehaving nodes, since the reaction effectiveness is close to $100\%$ for many scenarios and is greater than $85\%$ in all scenarios evaluated.
 \begin{figure}
 \centering
 \includegraphics[width=3.2in,height=2.2in]{figures/reaction_effectiveness.png}
@@ -899,8 +899,8 @@ CHAPTER 6
 The inter-packet transmission times of a node and its neighbors are used to detect misbehaviors in the network. 
 A collective misbehavior reaction strategy is used to suppress the misbehaving node and allow genuine nodes to regain their own throughput. 
 Important characteristics of both the detection and reaction mechanisms are that they are distributed in nature and rely only on a node's local information. The detection and reaction mechanisms require minimal protocol change and thus are easily implementable in practice.
-NS-2 simulations are performed to evaluate the proposed detection and reaction mechanisms. Results indicate significant improvement in throughput of the genuine nodes and reduction in the misbehaving nodes' throughput. 
-Scalabity of the detection and reaction strategies are also studied, and the results indicate that detection and reaction mechanisms are effective with a varying number nodes in the network. 
+NS-2 simulations are performed to evaluate the proposed detection and reaction mechanisms. Results indicate significant improvement in throughput of the genuine nodes and reduction in the misbehaving nodes' throughput when the proposed reaction scheme is applied. 
+Scalability of the detection and reaction strategies are also studied, and the results indicate that detection and reaction mechanisms are effective with a varying number of nodes in the network. 
 \subsection{Conclusions}
 \indent Detection of misbehavior based on the ratio of inter-packet transmission is very effective, and the detection threshold is designed to vary with the number of nodes in the network.
 The proposed collective reaction strategy is effective in restoring the node's original throughput and in penalizing the misbehaving node.
@@ -913,7 +913,7 @@ Due to the collective misbehavior reaction strategy, for the same misbehavior st
 \subsection{Future Work}
 \indent In the future, a mathematical model for the detection threshold could be derived instead of the empirical method proposed	 in the thesis. Another direction of future work includes evaluating the reaction scheme with transmission control protocol (TCP) traffic and for multi-hop ad-hoc networks.
 %In case of TCP, IPT time based method may need to be enhanced because TCP has its own retransmission mechanism and the effective throughput of the node at transport layer will be less than the throughput observed at MAC layer. 
-In case of multi-hop networks, there are additional factors to consider such as routing protocols, routing decisions etc. Also, additional reaction methods become applicable. For eg. if a node A determines node B to be misbehaving, node A can react such that it will not forward any packets originating from node B.
+In case of multi-hop networks, there are additional factors to consider such as routing protocols, routing decisions etc. Also, additional reaction methods become applicable. For eg. if node A determines node B to be misbehaving, node A can react such that it will not forward any packets originating from node B.
 \newpage
 %============================================================================================================
 %BIBLIOGRAPHY
